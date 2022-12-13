@@ -79,14 +79,14 @@ if __name__ == "__main__":
             for image in vk_photo_list:
                 app.download_files_from_vk(url=vk_photo_list[image]['url'])
                 app.yadisk_upload_file(vk_photo_list[image])
-                with open('logs.json', 'w') as outfile:
-                    json.dump(app.log, outfile)
+            with open('logs.json', 'w') as outfile:
+                json.dump(app.log, outfile)
         # Загрузка из Альбома
         vk_photo_list = app.get_vk_profile_photos_list(album_id='276363897')
         if vk_photo_list != None:
             for image in vk_photo_list:
                 app.download_files_from_vk(url=vk_photo_list[image]['url'])
                 app.yadisk_upload_file(vk_photo_list[image], base_dir='vk_albom')
-                with open('logs2.json', 'w') as outfile:
-                    json.dump(app.log, outfile)
+            with open('logs2.json', 'w') as outfile:
+                json.dump(app.log, outfile)
 
