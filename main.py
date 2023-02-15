@@ -2,7 +2,7 @@ import requests
 import os
 import datetime
 import json
-
+from decor import decorator
 
 class VK2YaDiskBackup:
     base_url = 'https://cloud-api.yandex.net/v1/disk'
@@ -16,7 +16,7 @@ class VK2YaDiskBackup:
                                 'Authorization': 'OAuth ' + yadisk_token}
 
         pass
-
+    @decorator
     def get_vk_profile_photos_list(self, album_id='profile'):
         url = f"https://api.vk.com/method/photos.get?owner_id={self.owner}" \
               f"&album_id={album_id}&extended=1&access_token={self.vk_token}&v=5.131"
@@ -33,7 +33,7 @@ class VK2YaDiskBackup:
             return out
         else:
             return None
-
+    @decorator
     def download_files_from_vk(self, image: dict, to_folder='img'):
         file_name = os.path.join(os.getcwd(), to_folder) #str(url).split('?size')[0].split('/')[-1]
         if not os.path.isdir(file_name):
@@ -45,7 +45,7 @@ class VK2YaDiskBackup:
             with open(file_name, 'wb') as file:
                 for chunk in r.iter_content(1024):
                     file.write(chunk)
-
+    @decorator
     def yadisk_upload_file(self, image: dict, base_dir='img'):
         folder_resp = self.session.put(f'{self.base_url}/resources?path={base_dir}')
         if folder_resp.status_code == 409 or folder_resp.status_code == 201: # is folder created/exists
@@ -67,6 +67,8 @@ class VK2YaDiskBackup:
                 if restp.status_code == 201:
                     self.log.append({"file_name": yadisk_file_name,
                                      "size": image['size']})
+
+
 
 
 if __name__ == "__main__":
